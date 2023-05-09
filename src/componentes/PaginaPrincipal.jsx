@@ -16,7 +16,7 @@ function PaginaPrincipal() {
                     </p>
                 </div>
                 <div className="col-12 col-md-6">
-                    <h1 className="mb-4">Visión</h1>
+                    <h1 className="mb-4">Visión nuevo valor</h1>
                     <p>
                         En el año 2025, nuestra empresa será la más reconocida en el sector a nivel nacional gracias a
                         su innovación y capacidad de generar productos 100% naturales y saludables. Aspiramos a mantener
