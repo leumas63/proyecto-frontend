@@ -27,7 +27,7 @@ class Empleado extends React.Component {
     data: data,
     form: {
       id: 1,
-      nombre: " ",
+      nombre: " sam",
       apellido: "Pérez",
       cedula: "123456789",
       correo: "juan.perez@gmail.com",
