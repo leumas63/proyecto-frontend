@@ -104,7 +104,7 @@ class Usuario extends Component {
   }
 
   eliminarUsuario = (id) => {
-    axios.delete(`https://ambrosia-385623.rj.r.appspot.com/usuarios/eliminar/${id}`)
+    axios.delete('https://ambrosia-385623.rj.r.appspot.com/usuarios/eliminar/${id}')
       .then(res => {
         console.log(res);
         this.cargarUsuarios();
