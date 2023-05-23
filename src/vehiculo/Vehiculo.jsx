@@ -1,7 +1,6 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Table, Button, Container, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
-import { resolvePath } from 'react-router-dom';
+import {Button, Container, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
 
 const data = [
   { capacidad: 1500.00, color: "balnco", placa: "DER774", year: 2000, marca_vehiculo_id: 1, id: 1 }
