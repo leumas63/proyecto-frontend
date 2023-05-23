@@ -78,40 +78,6 @@ class Usuario extends Component {
     });
   }
 
-  seleccionarUsuario = (usuario) => {
-    // Guardamos el usuario seleccionado y cambiamos el texto del botón a "Actualizar"
-    this.setState({ usuarioSeleccionado: usuario });
-    this.mostrarModalInsertar();
-  }
-
-  guardarUsuario = () => {
-    axios.post('https://ambrosia-385623.rj.r.appspot.com/usuarios/guardar', this.state.form)
-      .then(res => {
-        console.log(res.data); // Verifica que se guardaron los datos correctamente
-        this.setState({
-          data: [...this.state.data, res.data], // Agrega el nuevo usuario a la lista
-          form: { // Resetea el formulario
-            estado: '',
-            password: '',
-            rol: '',
-            username: '',
-            id: ''
-          },
-          modalInsertar: false // Cierra el modal
-        });
-      })
-      .catch(err => console.log(err));
-  }
-
-  eliminarUsuario = (id) => {
-    axios.delete('https://ambrosia-385623.rj.r.appspot.com/usuarios/eliminar/${id}')
-      .then(res => {
-        console.log(res);
-        this.cargarUsuarios();
-      })
-      .catch(err => console.log(err));
-  }
-
   editarUsuario = (usuario) => {
     // Actualizar el estado del formulario con los datos del usuario a editar
     const { id, username, rol, password, estado } = usuario; // desestructura el objeto usuario para obtener los valores
@@ -240,3 +206,41 @@ class Usuario extends Component {
 }
 
 export default Usuario;
+
+
+/*
+seleccionarUsuario = (usuario) => {
+    // Guardamos el usuario seleccionado y cambiamos el texto del botón a "Actualizar"
+    this.setState({ usuarioSeleccionado: usuario });
+    this.mostrarModalInsertar();
+  }
+
+  guardarUsuario = () => {
+    axios.post('https://ambrosia-385623.rj.r.appspot.com/usuarios/guardar', this.state.form)
+      .then(res => {
+        console.log(res.data); // Verifica que se guardaron los datos correctamente
+        this.setState({
+          data: [...this.state.data, res.data], // Agrega el nuevo usuario a la lista
+          form: { // Resetea el formulario
+            estado: '',
+            password: '',
+            rol: '',
+            username: '',
+            id: ''
+          },
+          modalInsertar: false // Cierra el modal
+        });
+      })
+      .catch(err => console.log(err));
+  }
+
+  eliminarUsuario = (id) => {
+    axios.delete('https://ambrosia-385623.rj.r.appspot.com/usuarios/eliminar/${id}')
+      .then(res => {
+        console.log(res);
+        this.cargarUsuarios();
+      })
+      .catch(err => console.log(err));
+  }
+
+*/
