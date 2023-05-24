@@ -54,6 +54,7 @@ function Login({ onLogin }) {
   
 
   return (
+    <h1> Hola faber
     <div className="login-container">
       <div className="background-image"></div>
       <form onSubmit={handleSubmit} className="login-form">
@@ -73,6 +74,7 @@ function Login({ onLogin }) {
         </div>
       </form>
     </div>
+    </h1>
   );
 }
 
