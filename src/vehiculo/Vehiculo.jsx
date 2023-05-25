@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button, Container, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
+import { Table, Button, Container, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
+import axios from 'axios'
+import abeja from "../imagenes/abeja.png"
 
-const data = [
-  { capacidad: 1500.00, color: "balnco", placa: "DER774", year: 2000, marca_vehiculo_id: 1, id: 1 }
-];
-
-class Vehiculo extends React.Component {
+class Vehiculo extends Component {
   state = {
-    data: data,
+    data: [],
     form: {
       capacidad: '',
       color: '',
@@ -18,7 +16,28 @@ class Vehiculo extends React.Component {
       id: ''
     },
     modalInsertar: false,
+    vehiculoSeleccionado: null,
+    loading: true,
+    error: null
   };
+
+  componentDidMount() {
+    axios.get('https://ambrosia-385623.rj.r.appspot.com/vehiculos/listar')
+      .then(res => {
+        console.log(res.data);
+        this.setState({
+          data: res.data,
+          loading: false
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          error: 'Error al cargar los datos',
+          loading: false
+        });
+      });
+  }
 
   handleChange = (e) => {
     this.setState({
@@ -30,88 +49,131 @@ class Vehiculo extends React.Component {
   }
 
   mostrarModalInsertar = () => {
-    this.setState({ modalInsertar: true });
+    const vehiculoSeleccionado = this.state.vehiculoSeleccionado;
+    this.setState({
+      form: {
+        capacidad: '',
+        color: '',
+        placa: '',
+        year: '',
+        marca_vehiculo_id: '',
+        id: ''
+      },
+      modalInsertar: true
+    });
   }
 
   ocultarModalInsertar = () => {
-    this.setState({ modalInsertar: false });
+    this.setState({
+      modalInsertar: false,
+      form: {
+        capacidad: '',
+        color: '',
+        placa: '',
+        year: '',
+        marca_vehiculo_id: '',
+        id: ''
+      },
+      vehiculoSeleccionado: null,
+    });
   }
 
   render() {
+    const { loading, error } = this.state;
+
+    if (loading) {
+      return <p>Cargando...</p>;
+    }
+
+    if (error) {
+      return <p>{error}</p>;
+    }
+
     return (
       <>
         <Container>
           <br />
-          <Button color="success" onClick={() => this.mostrarModalInsertar()}> Registrar vehiculo </Button>
+          <h1>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <span style={{ marginRight: 'auto' }}>Lista de vehículos</span>
+              <img src={abeja} alt="abeja" style={{ width: '6%', height: '6%', marginRight: '5px' }} />
+              <Button color="success" onClick={() => this.mostrarModalInsertar()} style={{ marginRight: '10px' }}>
+                Registrar vehículo
+              </Button>
+            </div>
+          </h1>
           <br />
           <br />
-          <table>
+          <Table>
             <thead>
               <tr>
-                <th style={{ padding: 10}}>Id</th>
-                <th style={{ padding: 10}}>Placa</th>
-                <th style={{ padding: 10}}>Color</th>
-                <th style={{ padding: 10}}>Year</th>
-                <th style={{ padding: 10}}>Marca_vehiculo_id</th>
+                <th style={{ padding: 10 }}>Id</th>
+                <th style={{ padding: 10 }}>Capacidad</th>
+                <th style={{ padding: 10 }}>Color</th>
+                <th style={{ padding: 10 }}>Placa</th>
+                <th style={{ padding: 10 }}>Año</th>
+                <th style={{ padding: 10 }}>Marca</th>
               </tr>
             </thead>
             <tbody>
-              {this.state.data.map((elemento) => (
-                <tr key={elemento.id}>
-                  <td style={{ padding: 5}}>{elemento.id}</td>
-                  <td style={{ padding: 10}}>{elemento.placa}</td>
-                  <td style={{ padding: 10}}>{elemento.color}</td>
-                  <td style={{ padding: 10}}>{elemento.year}</td>
-                  <td style={{ padding: 10}}>{elemento.marca_vehiculo_id}</td>
+              {this.state.data.map((vehiculo) => (
+                <tr key={vehiculo.id}>
+                  <td style={{ padding: 10 }}>{vehiculo.id}</td>
+                  <td style={{ padding: 10 }}>{vehiculo.capacidad}</td>
+                  <td style={{ padding: 10 }}>{vehiculo.color}</td>
+                  <td style={{ padding: 10 }}>{vehiculo.placa}</td>
+                  <td style={{ padding: 10 }}>{vehiculo.year}</td>
+                  <td style={{ padding: 10 }}>{vehiculo.marca_vehiculo_id}</td>
                   <td>
-                    <Button color="primary">Editar</Button>{" "}
-                    <Button color="danger">Eliminar</Button>
+                    <Button color="primary" onClick={() => this.editarVehiculo(vehiculo)}>Editar</Button>{" "}
+                    <Button color="danger" onClick={() => this.eliminarVehiculo(vehiculo.id)}>Eliminar</Button>
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table>
+          </Table>
         </Container>
 
         <Modal isOpen={this.state.modalInsertar} toggle={this.ocultarModalInsertar}>
-          <ModalHeader toggle={this.ocultarModalInsertar}>Registrar usuario</ModalHeader>
+          <ModalHeader toggle={this.ocultarModalInsertar}>Registrar vehículo</ModalHeader>
           <ModalBody>
             <FormGroup>
               <label>Id:</label>
-              <input type="text" className="form-control" value={this.state.data.length + 1} />
+              <input type="text" className="form-control" name="id" value={this.state.form.id} onChange={this.handleChange} required />
             </FormGroup>
 
             <FormGroup>
-              <label>placa:</label>
-              <input type="text" className="form-control" onChange={this.handleChange} />
+              <label>Capacidad:</label>
+              <input type="text" className="form-control" name="capacidad" value={this.state.form.capacidad} onChange={this.handleChange} required />
             </FormGroup>
 
             <FormGroup>
               <label>Color:</label>
-              <input type="password" className="form-control" onChange={this.handleChange} />
+              <input type="text" className="form-control" name="color" value={this.state.form.color} onChange={this.handleChange} required />
             </FormGroup>
 
             <FormGroup>
-              <label>Marca_vehiculo_id:</label>
-              <input type="password" className="form-control" onChange={this.handleChange} />
+              <label>Placa:</label>
+              <input type="text" className="form-control" name="placa" value={this.state.form.placa} onChange={this.handleChange} required />
             </FormGroup>
 
             <FormGroup>
-              <label>Year:</label>
-              <select className="form-control">
-                <option value="">Seleccionar...</option>
-                {Array.from({ length: 54 }, (_, i) => i + 1970).map((year) => (
-                  <option key={year} value={year}>{year}</option>
-                ))}
-              </select>
+              <label>Año:</label>
+              <input type="text" className="form-control" name="year" value={this.state.form.year} onChange={this.handleChange} required />
+            </FormGroup>
+
+            <FormGroup>
+              <label>Marca:</label>
+              <input type="text" className="form-control" name="marca_vehiculo_id" value={this.state.form.marca_vehiculo_id} onChange={this.handleChange} required />
             </FormGroup>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary">Guardar</Button>
-            <Button color="secondary" onClick={() => this.ocultarModalInsertar()}>Cancelar</Button>
+            <Button color="primary" onClick={this.insertar}>Registrar</Button>
+            <Button color="danger" onClick={this.ocultarModalInsertar}>Cancelar</Button>
           </ModalFooter>
         </Modal>
-      </>);
+      </>
+    );
   }
 }
 
