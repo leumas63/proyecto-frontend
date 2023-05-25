@@ -1,3 +1,6 @@
+// Este componente lo modifique para se entendieran como deveria estar funcionando los otros componentes 
+// con las llamadas de las apps, como no se trabajo en backend las llamadas a el mismo no traen nada 
+
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table, Button, Container, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
@@ -65,6 +68,14 @@ class Conductor extends Component {
 
   insertarConductor = () => {
     const { data, form } = this.state;
+    const campos = ['nombre', 'apellidos', 'cedula', 'correo', 'direccion', 'sexo', 'ciudad_id'];
+
+    // Verificar si algún campo está vacío
+    if (campos.some(campo => !form[campo])) {
+      this.setState({ mostrarAlertaCamposVacios: true });
+      return;
+    }
+
     const newConductor = {
       ...form,
       id: data.length + 1,
@@ -83,6 +94,7 @@ class Conductor extends Component {
         id: '',
       },
       modalInsertar: false,
+      mostrarAlertaCamposVacios: false, // Reiniciar el estado de mostrarAlertaCamposVacios
     });
   }
 
@@ -138,18 +150,18 @@ class Conductor extends Component {
 
     return (
       <Container>
-         <br />
-          <h1>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span style={{ marginRight: 'auto' }}>Lista de conductores</span>
-              <img src={abeja} alt="abeja" style={{ width: '6%', height: '6%', marginRight: '5px' }} />
-              <Button color="success" onClick={() => this.mostrarModalInsertar()} style={{ marginRight: '10px' }}>
-                Registrar conductor
-              </Button>
-            </div>
-          </h1>
-          <br />
-          <br />
+        <br />
+        <h1>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <span style={{ marginRight: 'auto' }}>Lista de conductores</span>
+            <img src={abeja} alt="abeja" style={{ width: '6%', height: '6%', marginRight: '5px' }} />
+            <Button color="success" onClick={() => this.mostrarModalInsertar()} style={{ marginRight: '10px' }}>
+              Registrar conductor
+            </Button>
+          </div>
+        </h1>
+        <br />
+        <br />
         <Table>
           <thead>
             <tr>
@@ -176,7 +188,7 @@ class Conductor extends Component {
                 <td>{conductor.sexo}</td>
                 <td>{conductor.ciudad_id}</td>
                 <td>
-                  <Button color="primary" onClick={() => this.mostrarModalEditar(conductor)}>Editar</Button>{' '}
+                  <Button color="primary" onClick={() => this.mostrarModalEditar(conductor)}>Actulizar</Button>{' '}
                   <Button color="danger" onClick={() => this.mostrarModalEliminar(conductor)}>Eliminar</Button>
                 </td>
               </tr>
@@ -288,18 +300,17 @@ class Conductor extends Component {
                 <option value="20">Tunja</option>
               </select>
             </FormGroup>
-            {this.state.mostrarAlerta && (
+            {this.state.mostrarAlertaCamposVacios && (
               <div className="alert alert-warning" role="alert">
                 Por favor complete todos los campos.
               </div>
             )}
-
           </ModalBody>
 
           <ModalFooter>
             {form.id ? (
               <Button color="primary" onClick={this.editarConductor}>
-                Editar
+                Actulizar
               </Button>
             ) : (
               <Button color="primary" onClick={this.insertarConductor}>
@@ -321,7 +332,7 @@ class Conductor extends Component {
           </ModalHeader>
 
           <ModalBody>
-         ¿Está seguro de que desea eliminar al conductor {conductorAEliminar?.nombre}?
+            ¿Está seguro de que desea eliminar al conductor {conductorAEliminar?.nombre}?
 
           </ModalBody>
 
