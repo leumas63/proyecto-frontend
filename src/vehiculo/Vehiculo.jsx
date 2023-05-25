@@ -3,10 +3,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table, Button, Container, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
 import axios from 'axios'
 import abeja from "../imagenes/abeja.png"
-import React, { Component } from 'react';
-import { Container, Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
-import axios from 'axios';
-import abeja from './abeja.png';
 
 class Vehiculo extends Component {
   state = {
@@ -62,7 +58,7 @@ class Vehiculo extends Component {
     const placa = vehiculoSeleccionado ? vehiculoSeleccionado.placa : '';
     const year = vehiculoSeleccionado ? vehiculoSeleccionado.year : '';
     const marca_vehiculo_id = vehiculoSeleccionado ? vehiculoSeleccionado.marca_vehiculo_id : '';
-    
+
     this.setState({
       form: {
         capacidad: capacidad,
