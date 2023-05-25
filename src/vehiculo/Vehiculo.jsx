@@ -3,6 +3,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Table, Button, Container, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
 import axios from 'axios'
 import abeja from "../imagenes/abeja.png"
+import React, { Component } from 'react';
+import { Container, Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, FormGroup } from 'reactstrap';
+import axios from 'axios';
+import abeja from './abeja.png';
 
 class Vehiculo extends Component {
   state = {
@@ -22,6 +26,7 @@ class Vehiculo extends Component {
   };
 
   componentDidMount() {
+    // Se obtienen los datos de los vehículos al cargar el componente
     axios.get('https://ambrosia-385623.rj.r.appspot.com/vehiculos/listar')
       .then(res => {
         console.log(res.data);
@@ -40,6 +45,7 @@ class Vehiculo extends Component {
   }
 
   handleChange = (e) => {
+    // Actualiza el valor de los campos del formulario en el estado
     this.setState({
       form: {
         ...this.state.form,
@@ -49,14 +55,21 @@ class Vehiculo extends Component {
   }
 
   mostrarModalInsertar = () => {
+    // Muestra el modal de registro de vehículo y establece los valores en el formulario
     const vehiculoSeleccionado = this.state.vehiculoSeleccionado;
+    const capacidad = vehiculoSeleccionado ? vehiculoSeleccionado.capacidad : '';
+    const color = vehiculoSeleccionado ? vehiculoSeleccionado.color : '';
+    const placa = vehiculoSeleccionado ? vehiculoSeleccionado.placa : '';
+    const year = vehiculoSeleccionado ? vehiculoSeleccionado.year : '';
+    const marca_vehiculo_id = vehiculoSeleccionado ? vehiculoSeleccionado.marca_vehiculo_id : '';
+    
     this.setState({
       form: {
-        capacidad: '',
-        color: '',
-        placa: '',
-        year: '',
-        marca_vehiculo_id: '',
+        capacidad: capacidad,
+        color: color,
+        placa: placa,
+        year: year,
+        marca_vehiculo_id: marca_vehiculo_id,
         id: ''
       },
       modalInsertar: true
@@ -64,6 +77,7 @@ class Vehiculo extends Component {
   }
 
   ocultarModalInsertar = () => {
+    // Oculta el modal de registro de vehículo y reinicia los valores del formulario
     this.setState({
       modalInsertar: false,
       form: {
