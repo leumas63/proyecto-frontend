@@ -61,6 +61,7 @@ class Empleado extends Component {
   mostrarModalInsertar = () => {
     // Muestra el modal de registro de empleado
     const empleadoSeleccionado = this.state.empleadoSeleccionado;
+    const estado = empleadoSeleccionado ? empleadoSeleccionado.estado : '';
     this.setState({
       form: {
         id: '',
@@ -71,7 +72,7 @@ class Empleado extends Component {
         direccion: '',
         sexo: '',
         ciudad_id: '',
-        estado: '',
+        estado: estado,
         fecha_ingreso: '',
         fecha_retiro: '',
         lugar_graduacion: '',
@@ -81,7 +82,7 @@ class Empleado extends Component {
       modalInsertar: true
     });
   }
-
+  
   ocultarModalInsertar = () => {
     // Oculta el modal de registro de empleado y limpia el formulario y el estado del empleado seleccionado
     this.setState({
