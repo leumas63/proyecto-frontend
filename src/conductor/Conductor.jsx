@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Table, Button, Container, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter } from 'reactstrap';
+import abeja from "../imagenes/abeja.png"
 
 class Conductor extends Component {
   state = {
@@ -127,7 +130,7 @@ class Conductor extends Component {
     });
     this.setState({ data: newData, modalInsertar: false });
   }
- 
+
   render() {
     return (
       <>
@@ -135,7 +138,8 @@ class Conductor extends Component {
           <br />
           <h1>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <span style={{ marginRight: 'auto' }}>Lista de conductores</span>
+              <span style={{ marginRight: 'auto' }}>Lista de usuarios</span>
+              <img src={abeja} alt="abeja" style={{ width: '6%', height: '6%', marginRight: '5px' }} />
               <Button color="success" onClick={() => this.mostrarModalInsertar()} style={{ marginRight: '10px' }}>
                 Registrar conductor
               </Button>
