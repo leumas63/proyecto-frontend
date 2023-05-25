@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class ConductorApp extends Component {
+class Conductor extends Component {
   state = {
     data: [
       { id: 1, nombre: 'John', apellidos: 'Doe', cedula: '1234567890', correo: 'john@example.com', direccion: 'Calle 123', sexo: 'M', ciudad_id: '1' },
@@ -127,10 +127,8 @@ class ConductorApp extends Component {
     });
     this.setState({ data: newData, modalInsertar: false });
   }
-
+ 
   render() {
-   // const { data, form, modalInsertar, conductorSeleccionado } = this.state;
-
     return (
       <>
         <Container>
@@ -265,3 +263,5 @@ class ConductorApp extends Component {
 }
 
 export default Conductor;
+
+
