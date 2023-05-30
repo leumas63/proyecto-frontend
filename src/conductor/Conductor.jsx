@@ -8,18 +8,7 @@ import abeja from "../imagenes/abeja.png"
 
 class Conductor extends Component {
   state = {
-    data: [
-      { id: 1, nombre: 'John', apellidos: 'Doe', cedula: '1234567890', correo: 'john@example.com', direccion: 'Calle 123', sexo: 'M', ciudad_id: '1' },
-      { id: 2, nombre: 'Jane', apellidos: 'Smith', cedula: '0987654321', correo: 'jane@example.com', direccion: 'Avenida 456', sexo: 'F', ciudad_id: '2' },
-      { id: 3, nombre: 'David', apellidos: 'Johnson', cedula: '5678901234', correo: 'david@example.com', direccion: 'Plaza 789', sexo: 'M', ciudad_id: '3' },
-      { id: 4, nombre: 'Emily', apellidos: 'Brown', cedula: '4321098765', correo: 'emily@example.com', direccion: 'Calle 456', sexo: 'F', ciudad_id: '1' },
-      { id: 5, nombre: 'Michael', apellidos: 'Miller', cedula: '9876543210', correo: 'michael@example.com', direccion: 'Avenida 789', sexo: 'M', ciudad_id: '2' },
-      { id: 6, nombre: 'Olivia', apellidos: 'Davis', cedula: '6543210987', correo: 'olivia@example.com', direccion: 'Plaza 123', sexo: 'F', ciudad_id: '3' },
-      { id: 7, nombre: 'William', apellidos: 'Wilson', cedula: '3456789012', correo: 'william@example.com', direccion: 'Calle 789', sexo: 'M', ciudad_id: '1' },
-      { id: 8, nombre: 'Sophia', apellidos: 'Taylor', cedula: '2109876543', correo: 'sophia@example.com', direccion: 'Avenida 123', sexo: 'F', ciudad_id: '2' },
-      { id: 9, nombre: 'James', apellidos: 'Anderson', cedula: '8765432109', correo: 'james@example.com', direccion: 'Plaza 456', sexo: 'M', ciudad_id: '3' },
-      { id: 10, nombre: 'Emma', apellidos: 'Moore', cedula: '1098765432', correo: 'emma@example.com', direccion: 'Calle 123', sexo: 'F', ciudad_id: '1' },
-    ],
+    data: [],
     form: {
       nombre: '',
       apellidos: '',
@@ -38,40 +27,54 @@ class Conductor extends Component {
     conductorAEliminar: null,
   };
 
+  componentDidMount() {
+    const storedData = localStorage.getItem('conductorData');
+
+    if (storedData) {
+      this.setState({
+        data: JSON.parse(storedData),
+      });
+    }
+  }
+
+  componentDidUpdate() {
+    const { data } = this.state;
+    localStorage.setItem('conductorData', JSON.stringify(data));
+  }
+
   handleChange = (e) => {
     this.setState({
       form: {
         ...this.state.form,
         [e.target.name]: e.target.value,
-      }
+      },
     });
-  }
+  };
 
   mostrarModalInsertar = () => {
     this.setState({
       modalInsertar: true,
     });
-  }
+  };
 
   ocultarModalInsertar = () => {
     this.setState({
       modalInsertar: false,
     });
-  }
+  };
 
   mostrarModalEditar = (conductor) => {
     this.setState({
       form: conductor,
       modalInsertar: true,
     });
-  }
+  };
 
   insertarConductor = () => {
     const { data, form } = this.state;
     const campos = ['nombre', 'apellidos', 'cedula', 'correo', 'direccion', 'sexo', 'ciudad_id'];
 
-    // Verificar si algún campo está vacío
-    if (campos.some(campo => !form[campo])) {
+    if (campos.some((campo) => !form[campo])) {
       this.setState({ mostrarAlertaCamposVacios: true });
       return;
     }
@@ -81,22 +84,27 @@ class Conductor extends Component {
       id: data.length + 1,
     };
     const newData = [...data, newConductor];
-    this.setState({
-      data: newData,
-      form: {
-        nombre: '',
-        apellidos: '',
-        cedula: '',
-        correo: '',
-        direccion: '',
-        sexo: '',
-        ciudad_id: '',
-        id: '',
+    this.setState(
+      {
+        data: newData,
+        form: {
+          nombre: '',
+          apellidos: '',
+          cedula: '',
+          correo: '',
+          direccion: '',
+          sexo: '',
+          ciudad_id: '',
+          id: '',
+        },
+        modalInsertar: false,
+        mostrarAlertaCamposVacios: false,
       },
-      modalInsertar: false,
-      mostrarAlertaCamposVacios: false, // Reiniciar el estado de mostrarAlertaCamposVacios
-    });
-  }
+      () => {
+        localStorage.setItem('conductorData', JSON.stringify(newData));
+      }
+    );
+  };
 
   editarConductor = () => {
     const { data, form } = this.state;
@@ -106,44 +114,54 @@ class Conductor extends Component {
       }
       return conductor;
     });
-    this.setState({
-      data: newData,
-      form: {
-        nombre: '',
-        apellidos: '',
-        cedula: '',
-        correo: '',
-        direccion: '',
-        sexo: '',
-        ciudad_id: '',
-        id: '',
+    this.setState(
+      {
+        data: newData,
+        form: {
+          nombre: '',
+          apellidos: '',
+          cedula: '',
+          correo: '',
+          direccion: '',
+          sexo: '',
+          ciudad_id: '',
+          id: '',
+        },
+        modalInsertar: false,
       },
-      modalInsertar: false,
-    });
-  }
+      () => {
+        localStorage.setItem('conductorData', JSON.stringify(newData));
+      }
+    );
+  };
 
   mostrarModalEliminar = (conductor) => {
     this.setState({
       conductorAEliminar: conductor,
       mostrarAlerta: true,
     });
-  }
+  };
 
   ocultarModalEliminar = () => {
     this.setState({
       conductorAEliminar: null,
       mostrarAlerta: false,
     });
-  }
+  };
 
   eliminarConductor = () => {
     const { data, conductorAEliminar } = this.state;
     const newData = data.filter((conductor) => conductor.id !== conductorAEliminar.id);
-    this.setState({
-      data: newData,
-      mostrarAlerta: false,
-    });
-  }
+    this.setState(
+      {
+        data: newData,
+        mostrarAlerta: false,
+      },
+      () => {
+        localStorage.setItem('conductorData', JSON.stringify(newData));
+      }
+    );
+  };
 
   render() {
     const { data, form, modalInsertar, mostrarAlerta, conductorAEliminar } = this.state;
