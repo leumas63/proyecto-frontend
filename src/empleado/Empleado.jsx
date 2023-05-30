@@ -47,7 +47,7 @@ class Empleado extends Component {
         });
       });
   }
-
+  
   handleChange = (e) => {
     // Maneja los cambios en los campos del formulario
     this.setState({

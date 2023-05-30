@@ -2,6 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
+  const handleReloadPage = () => {
+    window.location.reload();
+  };
+
   return (
     // Barra de navegación
     <nav className="navbar navbar-expand-lg navbar-light" style={{ backgroundColor: 'rgba(128, 128, 128, 0.5)' }}>
@@ -53,7 +57,13 @@ const Navbar = () => {
               <Link className="nav-link" to="/vehiculo">
                 Vehiculo
               </Link>
+
             </li>
+
+            {/* Botón para recargar la página */}
+            <button className="btn btn-light" onClick={handleReloadPage}>
+              cerrar sesion
+            </button>
           </ul>
         </div>
       </div>
